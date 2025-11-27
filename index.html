@@ -214,7 +214,7 @@
             <div class="form-group"><label for="medicineName">💊 Medicine Name:</label><input type="text" id="medicineName" required placeholder="Enter medicine name"></div>
             <div class="form-group"><label for="batchNumber">🏷️ Batch Number:</label><input type="text" id="batchNumber" required placeholder="Enter batch number"></div>
             <div class="form-group"><label for="quantity">📦 Quantity:</label><input type="number" id="quantity" min="0" required placeholder="Enter quantity"></div>
-            <div class="form-group"><label for="price">💰 Price:</label><input type="number" id="price" step="0.01" min="0" required placeholder="Enter price"></div>
+            <div class="form-group"><label for="price">💰 Price (KSh):</label><input type="number" id="price" step="0.01" min="0" required placeholder="Enter price in KSh"></div>
             <div class="form-group"><label for="expiryDate">📅 Expiry Date:</label><input type="date" id="expiryDate" required></div>
             <div class="form-group"><label for="minStock">⚡ Minimum Stock Level:</label><input type="number" id="minStock" min="1" value="10" required></div>
             <div class="form-group"><label for="medicineDescription">📝 Description:</label><textarea id="medicineDescription" rows="3" placeholder="Optional medicine description"></textarea></div>
@@ -439,7 +439,7 @@
                     <td><strong>${medicine.name}</strong>${medicine.description ? '<br><small style=\"color:#7f8c8d;\">' + medicine.description + '</small>' : ''}</td>
                     <td>${medicine.batch_number}</td>
                     <td>${medicine.quantity}</td>
-                    <td>$${parseFloat(medicine.price).toFixed(2)}</td>
+                    <td>KSh ${parseFloat(medicine.price).toFixed(2)}</td>
                     <td>${new Date(medicine.expiry_date).toLocaleDateString()}</td>
                     <td>${medicine.min_stock}</td>
                     <td><span class="status-badge status-${status}">${status.replace('_', ' ').toUpperCase()}</span></td>
@@ -564,7 +564,7 @@
                     <td><strong>${medicine.name}</strong>${medicine.description ? '<br><small style=\"color:#7f8c8d;\">' + medicine.description + '</small>' : ''}</td>
                     <td>${medicine.batch_number}</td>
                     <td>${medicine.quantity}</td>
-                    <td>$${parseFloat(medicine.price).toFixed(2)}</td>
+                    <td>KSh ${parseFloat(medicine.price).toFixed(2)}</td>
                     <td>${new Date(medicine.expiry_date).toLocaleDateString()}</td>
                     <td>${medicine.min_stock}</td>
                     <td><span class="status-badge status-${status}">${status.replace('_', ' ').toUpperCase()}</span></td>
@@ -586,7 +586,7 @@
             medicines.forEach(medicine => {
                 const option = document.createElement('option');
                 option.value = medicine.id;
-                option.textContent = `${medicine.name} (Stock: ${medicine.quantity}, Price: $${medicine.price})`;
+                option.textContent = `${medicine.name} (Stock: ${medicine.quantity}, Price: KSh ${medicine.price})`;
                 option.setAttribute('data-price', medicine.price);
                 select.appendChild(option);
                 const editOption = option.cloneNode(true);
@@ -609,10 +609,10 @@
                     const breakdown = document.getElementById('priceBreakdown');
                     breakdown.innerHTML = `
                         <h4>💰 Price Breakdown:</h4>
-                        <div class="price-item"><span>Unit Price:</span><span>$${unitPrice.toFixed(2)} × ${quantity}</span></div>
-                        <div class="price-item"><span>Subtotal:</span><span>$${totalBeforeDiscount.toFixed(2)}</span></div>
-                        ${discount > 0 ? `<div class="price-item" style="color: #e74c3c;"><span>Discount (${discount}%):</span><span>- $${discountAmount.toFixed(2)}</span></div>` : ''}
-                        <div class="price-item price-total"><span>💵 Total Amount:</span><span><strong>$${finalPrice.toFixed(2)}</strong></span></div>
+                        <div class="price-item"><span>Unit Price:</span><span>KSh ${unitPrice.toFixed(2)} × ${quantity}</span></div>
+                        <div class="price-item"><span>Subtotal:</span><span>KSh ${totalBeforeDiscount.toFixed(2)}</span></div>
+                        ${discount > 0 ? `<div class="price-item" style="color: #e74c3c;"><span>Discount (${discount}%):</span><span>- KSh ${discountAmount.toFixed(2)}</span></div>` : ''}
+                        <div class="price-item price-total"><span>💵 Total Amount:</span><span><strong>KSh ${finalPrice.toFixed(2)}</strong></span></div>
                     `;
                 }
             } else {
@@ -639,10 +639,10 @@
                 const breakdown = document.getElementById('editPriceBreakdown');
                 breakdown.innerHTML = `
                     <h4>💰 Price Breakdown:</h4>
-                    <div class="price-item"><span>Unit Price:</span><span>$${unitPrice.toFixed(2)} × ${quantity}</span></div>
-                    <div class="price-item"><span>Subtotal:</span><span>$${totalBeforeDiscount.toFixed(2)}</span></div>
-                    ${discount > 0 ? `<div class="price-item" style="color: #e74c3c;"><span>Discount (${discount}%):</span><span>- $${discountAmount.toFixed(2)}</span></div>` : ''}
-                    <div class="price-item price-total"><span>💵 Total Amount:</span><span><strong>$${finalPrice.toFixed(2)}</strong></span></div>
+                    <div class="price-item"><span>Unit Price:</span><span>KSh ${unitPrice.toFixed(2)} × ${quantity}</span></div>
+                    <div class="price-item"><span>Subtotal:</span><span>KSh ${totalBeforeDiscount.toFixed(2)}</span></div>
+                    ${discount > 0 ? `<div class="price-item" style="color: #e74c3c;"><span>Discount (${discount}%):</span><span>- KSh ${discountAmount.toFixed(2)}</span></div>` : ''}
+                    <div class="price-item price-total"><span>💵 Total Amount:</span><span><strong>KSh ${finalPrice.toFixed(2)}</strong></span></div>
                 `;
             } else {
                 document.getElementById('editPriceBreakdown').innerHTML = '';
@@ -701,9 +701,9 @@
                     <td><strong>${sale.medicine_name}</strong><br><small>${sale.batch_number}</small></td>
                     <td><img src="${sale.medicine_image}" alt="${sale.medicine_name}" class="medicine-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjcwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjMzQ5OGRiIi8+CjxwYXRoIGQ9Ik0yMCAzMEg1MFY1MEgyMFYzMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zMCAyMFY2ME00MCAyMFY2MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo='"></td>
                     <td>${sale.quantity}</td>
-                    <td>$${parseFloat(sale.unit_price).toFixed(2)}</td>
+                    <td>KSh ${parseFloat(sale.unit_price).toFixed(2)}</td>
                     <td>${sale.discount}%</td>
-                    <td><strong>$${parseFloat(sale.total_price).toFixed(2)}</strong></td>
+                    <td><strong>KSh ${parseFloat(sale.total_price).toFixed(2)}</strong></td>
                     <td>${new Date(sale.date).toLocaleDateString()}<br><small>${new Date(sale.date).toLocaleTimeString()}</small></td>
                     <td>
                         <button class="btn btn-warning" onclick="editSale(${sale.id})">✏️ Edit</button>
@@ -877,14 +877,14 @@
                     reportHTML += `<tr>
                         <td><strong>${sale.medicine_name}</strong><br><small>${sale.batch_number}</small></td>
                         <td><img src="${sale.medicine_image}" alt="${sale.medicine_name}" class="medicine-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCA3MCA3MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjcwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjMzQ5OGRiIi8+CjxwYXRoIGQ9Ik0yMCAzMEg1MFY1MEgyMFYzMFoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0zMCAyAFY2ME00MCAyAFY2MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo='"></td>
-                        <td>${sale.quantity}</td><td>$${sale.unit_price.toFixed(2)}</td><td>${sale.discount}%</td><td><strong>$${parseFloat(sale.total_price).toFixed(2)}</strong></td>
+                        <td>${sale.quantity}</td><td>KSh ${sale.unit_price.toFixed(2)}</td><td>${sale.discount}%</td><td><strong>KSh ${parseFloat(sale.total_price).toFixed(2)}</strong></td>
                         <td>${new Date(sale.date).toLocaleDateString()}<br><small>${new Date(sale.date).toLocaleTimeString()}</small></td></tr>`;
                 });
                 reportHTML += '</table>';
                 reportHTML += `<div class="sales-summary"><h4>💰 Sales Summary</h4><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">$${totalRevenue.toFixed(2)}</div><div>Total Revenue</div></div>
-                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">$${totalDiscounts.toFixed(2)}</div><div>Total Discounts Given</div></div>
-                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">$${(totalRevenue + totalDiscounts).toFixed(2)}</div><div>Gross Revenue</div></div>
+                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">KSh ${totalRevenue.toFixed(2)}</div><div>Total Revenue</div></div>
+                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">KSh ${totalDiscounts.toFixed(2)}</div><div>Total Discounts Given</div></div>
+                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">KSh ${(totalRevenue + totalDiscounts).toFixed(2)}</div><div>Gross Revenue</div></div>
                     <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">${((totalDiscounts / (totalRevenue + totalDiscounts)) * 100).toFixed(1)}%</div><div>Average Discount Rate</div></div></div></div>`;
             } else {
                 reportHTML += '<div style="text-align: center; padding: 40px; background: #fff3cd; border-radius: 10px; color: #856404;"><h4 style="color: #856404;">📊 No Sales Recorded Yet</h4><p>Start recording sales to see analytics and reports here.</p></div>';
@@ -905,7 +905,7 @@
                 reportHTML += `<div class="sales-summary"><h4>📊 Discount Overview</h4><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
                     <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">${totalSales}</div><div>Total Sales</div></div>
                     <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">${discountedSales.length}</div><div>Discounted Sales</div></div>
-                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">$${totalDiscountAmount.toFixed(2)}</div><div>Total Discounts</div></div>
+                    <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">KSh ${totalDiscountAmount.toFixed(2)}</div><div>Total Discounts</div></div>
                     <div style="text-align: center;"><div style="font-size: 1.5em; font-weight: bold;">${averageDiscount.toFixed(1)}%</div><div>Avg Discount Rate</div></div></div></div>`;
                 reportHTML += '<h4 style="color: #2c3e50; margin: 30px 0 15px 0;">📈 Discount Distribution</h4><table><tr><th>🎯 Discount Range</th><th>📊 Number of Sales</th><th>📈 Percentage</th></tr>';
                 Object.entries(discountRanges).forEach(([range, count]) => {
@@ -916,7 +916,7 @@
                 if (discountedSales.length > 0) {
                     reportHTML += '<h4 style="color: #2c3e50; margin: 30px 0 15px 0;">🏆 Top Discounted Sales</h4><table><tr><th>💊 Medicine</th><th>🎯 Discount</th><th>💰 Discount Amount</th><th>💵 Final Price</th><th>📅 Date</th></tr>';
                     discountedSales.sort((a, b) => b.discount - a.discount).slice(0, 10).forEach(sale => {
-                        reportHTML += `<tr><td><strong>${sale.medicine_name}</strong></td><td><strong>${sale.discount}%</strong></td><td>$${(sale.discount_amount || 0).toFixed(2)}</td><td>$${sale.total_price.toFixed(2)}</td><td>${new Date(sale.date).toLocaleDateString()}</td></tr>`;
+                        reportHTML += `<tr><td><strong>${sale.medicine_name}</strong></td><td><strong>${sale.discount}%</strong></td><td>KSh ${(sale.discount_amount || 0).toFixed(2)}</td><td>KSh ${sale.total_price.toFixed(2)}</td><td>${new Date(sale.date).toLocaleDateString()}</td></tr>`;
                     });
                     reportHTML += '</table>';
                 }
